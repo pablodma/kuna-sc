@@ -1,15 +1,18 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: financing-offer-api
   
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://db.lcppzendmlaikynqfjuy.supabase.co:5432/postgres?sslmode=require}
+    url: ${DATABASE_URL:jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require}
     username: ${DATABASE_USERNAME:postgres.lcppzendmlaikynqfjuy}
-    password: ${DATABASE_PASSWORD:PyvKRQ6954CvpFao}
+    password: ${DATABASE_PASSWORD:G*C2H72s2Mv*8Lg}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
   
   jpa:
     hibernate:
