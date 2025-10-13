@@ -6,9 +6,9 @@ spring:
     name: financing-offer-api
   
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/financing_offer}
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:password}
+    url: ${DATABASE_URL:jdbc:postgresql://db.lcppzendmlaikynqfjuy.supabase.co:5432/postgres?sslmode=require}
+    username: ${DATABASE_USERNAME:postgres.lcppzendmlaikynqfjuy}
+    password: ${DATABASE_PASSWORD:PyvKRQ6954CvpFao}
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -27,7 +27,7 @@ spring:
 
 # JWT Configuration
 jwt:
-  secret: ${JWT_SECRET:mySecretKey}
+  secret: ${JWT_SECRET:0ZVBBt8z6UBs2OIfumc0mjj8k12uawB9m18iaZmnPjedlNCTKzL4uGqO7WrAYA3uDZktMlSyPhp4BieUqBQNQw==}
   expiration: ${JWT_EXPIRATION:86400000} # 24 hours
 
 # CORS Configuration
