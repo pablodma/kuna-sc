@@ -37,5 +37,5 @@ RUN ls -la
 # Expose port
 EXPOSE 8080
 
-# Run the application
-CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "app.jar"]
+# Run the application - JAR is in /app/app.jar, not /app/target/
+CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "/app/app.jar"]
