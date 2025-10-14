@@ -1,7 +1,7 @@
 'use client';
 
-import { use, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { MOCK_LEADS } from '@/lib/mockLeads';
 import { TramiteStage } from '@/lib/leads';
 import TramiteStepper from '@/components/TramiteStepper';
@@ -9,12 +9,9 @@ import { COUNTRIES } from '@/lib/countries';
 import { ArrowLeft, User, Car, Calendar, Building, Phone, Mail, FileText } from 'lucide-react';
 import SimulatorForm from '@/components/SimulatorForm';
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default function LeadDetailPage({ params }: PageProps) {
-  const { id } = use(params);
+export default function LeadDetailPage() {
+  const params = useParams();
+  const id = params?.id as string;
   const router = useRouter();
   const lead = MOCK_LEADS.find(l => l.id === id);
   const [activeTab, setActiveTab] = useState<TramiteStage>(TramiteStage.OFERTA);

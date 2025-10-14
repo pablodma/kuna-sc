@@ -63,10 +63,18 @@ export default function LeadsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Leads y Oportunidades</h1>
-          <p className="text-gray-600">Gestiona todas las oportunidades de financiamiento</p>
+        {/* Header with Kavak Branding */}
+        <div className="mb-8 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] rounded-xl shadow-lg p-6 text-white">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Leads y Oportunidades</h1>
+              <p className="text-white/90">Gestiona todas las oportunidades de financiamiento</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-semibold">KAVAK</p>
+              <p className="text-[#00D4AA] font-bold">CRÉDITO</p>
+            </div>
+          </div>
         </div>
 
         {/* Filters */}
@@ -80,7 +88,7 @@ export default function LeadsPage() {
                 placeholder="Buscar por nombre, DNI, deal..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
               />
             </div>
 
@@ -88,7 +96,7 @@ export default function LeadsPage() {
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value as LeadPriority | 'ALL')}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
             >
               <option value="ALL">Todas las prioridades</option>
               <option value={LeadPriority.ALTA}>Alta</option>
@@ -100,7 +108,7 @@ export default function LeadsPage() {
             <select
               value={filterStage}
               onChange={(e) => setFilterStage(e.target.value as TramiteStage | 'ALL')}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
             >
               <option value="ALL">Todas las etapas</option>
               <option value={TramiteStage.OFERTA}>Oferta</option>
@@ -112,7 +120,7 @@ export default function LeadsPage() {
             <select
               value={filterCountry}
               onChange={(e) => setFilterCountry(e.target.value as 'ALL' | 'AR' | 'CL')}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
             >
               <option value="ALL">Todos los países</option>
               <option value="AR">{COUNTRIES.AR.flag} Argentina</option>
@@ -267,7 +275,7 @@ export default function LeadsPage() {
                           e.stopPropagation();
                           router.push(`/leads/${lead.id}`);
                         }}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-[#2E5BFF] hover:text-[#00D4AA] font-semibold transition-colors"
                       >
                         Ver detalle →
                       </button>
