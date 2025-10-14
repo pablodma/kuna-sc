@@ -17,27 +17,67 @@ export interface Vehiculo {
   sku: string;
 }
 
+// Escenario de simulación
+export interface SimulationScenario {
+  id: string;
+  nombre: string;
+  porcentajeFinanciar: number;
+  montoAFinanciar?: number;
+}
+
+// Request para múltiples escenarios
 export interface FinancingOfferRequest {
   cliente: Cliente;
+  titularesAdicionales?: Cliente[];
   vehiculo: Vehiculo;
-  porcentajeFinanciar: number;
-  cuotas?: number;
+  escenarios: SimulationScenario[];
   dealId?: string;
   subsidiary?: number;
   country?: string;
 }
 
-export interface Simulacion {
-  meses: number;
-  cuotaMensual: number;
+// Opción de cuotas dentro de un escenario
+export interface CuotaOption {
+  cuotas: number;
+  valorCuota: number;
   tna: number;
-  tae: number;
+  tea: number;
 }
 
+// Resultado de simulación por escenario
+export interface SimulacionEscenario {
+  escenarioId: string;
+  porcentaje: number;
+  montoFinanciar: number;
+  opciones: CuotaOption[];
+}
+
+// Response completa de simulación
 export interface SimulacionResponse {
-  montoTotal: number;
-  montoFinanciado: number;
-  simulaciones: Simulacion[];
+  resultados: SimulacionEscenario[];
+}
+
+// Opción seleccionada por el usuario
+export interface SelectedSimulation {
+  escenarioId: string;
+  porcentaje: number;
+  montoFinanciar: number;
+  cuotas: number;
+  valorCuota: number;
+  tna: number;
+  tea: number;
+}
+
+// Sistema de comentarios
+export interface Comment {
+  id: string;
+  userId: string;
+  userName: string;
+  userRole: string;
+  texto: string;
+  timestamp: Date;
+  parentId?: string;
+  respuestas?: Comment[];
 }
 
 export interface AjustesSistema {

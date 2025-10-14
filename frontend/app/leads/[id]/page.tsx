@@ -8,6 +8,7 @@ import TramiteStepper from '@/components/TramiteStepper';
 import { COUNTRIES } from '@/lib/countries';
 import { ArrowLeft, User, Car, Calendar, Building, Phone, Mail, FileText } from 'lucide-react';
 import SimulatorForm from '@/components/SimulatorForm';
+import { SelectedSimulation } from '@/lib/types';
 
 export default function LeadDetailPage() {
   const params = useParams();
@@ -15,6 +16,7 @@ export default function LeadDetailPage() {
   const router = useRouter();
   const lead = MOCK_LEADS.find(l => l.id === id);
   const [activeTab, setActiveTab] = useState<TramiteStage>(TramiteStage.OFERTA);
+  const [selectedSimulation, setSelectedSimulation] = useState<SelectedSimulation | null>(null);
 
   if (!lead) {
     return (
@@ -222,6 +224,8 @@ export default function LeadDetailPage() {
                   leadData={lead}
                   onSimulationComplete={(result) => {
                     console.log('Simulación completada:', result);
+                    setSelectedSimulation(result);
+                    setActiveTab(TramiteStage.HANDOFF);
                   }}
                 />
               )}
@@ -229,13 +233,71 @@ export default function LeadDetailPage() {
               {activeTab === TramiteStage.HANDOFF && (
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Gestión de Handoff</h3>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-                    <FileText className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-                    <p className="text-blue-900 font-medium mb-2">Funcionalidad Handoff</p>
-                    <p className="text-blue-700 text-sm">
-                      Esta sección estará disponible próximamente para gestionar la entrega del vehículo
-                    </p>
-                  </div>
+                  
+                  {selectedSimulation ? (
+                    <div className="space-y-6">
+                      {/* Simulación Seleccionada */}
+                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-500 rounded-lg p-6">
+                        <div className="flex items-center mb-4">
+                          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white mr-3">
+                            ✓
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900">Simulación Aprobada</h4>
+                            <p className="text-sm text-gray-600">Financiamiento del {selectedSimulation.porcentaje}%</p>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-white rounded-lg p-4 shadow-sm">
+                            <p className="text-xs text-gray-500 mb-1">Monto a Financiar</p>
+                            <p className="text-lg font-bold text-[#2E5BFF]">
+                              {formatCurrency(selectedSimulation.montoFinanciar)}
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-lg p-4 shadow-sm">
+                            <p className="text-xs text-gray-500 mb-1">Cuotas</p>
+                            <p className="text-lg font-bold text-gray-900">
+                              {selectedSimulation.cuotas} meses
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-lg p-4 shadow-sm">
+                            <p className="text-xs text-gray-500 mb-1">Valor Cuota</p>
+                            <p className="text-lg font-bold text-[#00D4AA]">
+                              {formatCurrency(selectedSimulation.valorCuota)}
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-lg p-4 shadow-sm">
+                            <p className="text-xs text-gray-500 mb-1">TNA</p>
+                            <p className="text-lg font-bold text-gray-900">
+                              {selectedSimulation.tna.toFixed(2)}%
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-lg p-4 shadow-sm">
+                            <p className="text-xs text-gray-500 mb-1">TEA</p>
+                            <p className="text-lg font-bold text-gray-900">
+                              {selectedSimulation.tea.toFixed(2)}%
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Próximos pasos de Handoff */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <FileText className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+                        <p className="text-blue-900 font-medium mb-2 text-center">Funcionalidad Handoff</p>
+                        <p className="text-blue-700 text-sm text-center">
+                          Esta sección estará disponible próximamente para gestionar la entrega del vehículo
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                      <p className="text-yellow-800">
+                        Primero debes completar y aprobar una simulación en la etapa de Oferta
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
