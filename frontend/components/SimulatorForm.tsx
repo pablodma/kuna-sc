@@ -424,9 +424,20 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             </p>
           )}
 
-          <div className="space-y-4">
+          {/* Grid Responsive: 1 col → 2 cols → 3 cols */}
+          <div className={`grid gap-4 ${
+            escenarios.length === 1 ? 'grid-cols-1' :
+            escenarios.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
+            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {escenarios.map((escenario, index) => (
-              <div key={escenario.id} className="border-2 border-[#2E5BFF] rounded-lg p-4 bg-blue-50">
+              <div 
+                key={escenario.id} 
+                className="border-2 border-[#2E5BFF] rounded-lg p-4 bg-blue-50 animate-scaleIn"
+                style={{
+                  animationDelay: `${index * 100}ms`
+                }}
+              >
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="font-bold text-gray-900">Escenario {index + 1}</h4>
                   {escenarios.length > 1 && (
