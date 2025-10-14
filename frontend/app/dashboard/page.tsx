@@ -1,16 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-import { SimulacionResponse, CRMData } from '@/lib/types';
-import SimulatorForm from '@/components/SimulatorForm';
-import SimulationResults from '@/components/SimulationResults';
 
 export default function DashboardPage() {
-  const [simulation, setSimulation] = useState<SimulacionResponse | null>(null);
-  const [crmData, setCrmData] = useState<CRMData | null>(null);
-  const { user, logout, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -18,9 +13,16 @@ export default function DashboardPage() {
       router.push('/login');
       return;
     }
+    
+    // Redirect to leads page
+    router.push('/leads');
+  }, [isAuthenticated, router]);
 
-    // Simular recepción de datos del CRM
-    // En un escenario real, esto vendría de una API o WebSocket
+  return null;
+}
+
+// OLD CODE BELOW - Keeping as reference for now
+/*
     const mockCRMData: CRMData = {
       'client-id': 'crm-adapters-api',
       'request-id': '7eb73254efecba5e6604cf3d8587ecca',

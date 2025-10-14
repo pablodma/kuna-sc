@@ -82,7 +82,12 @@ public class User implements UserDetails {
     }
     
     public enum Role {
-        USER, ADMIN
+        COMERCIAL_KAVAK,
+        COMERCIAL_KUNA,
+        LIDER,
+        ADMIN,
+        // Legacy roles for backward compatibility
+        USER
     }
 }
 
