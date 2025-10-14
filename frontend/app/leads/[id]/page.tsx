@@ -69,28 +69,28 @@ export default function LeadDetailPage() {
     <div className="min-h-screen">
       {/* Header with Kavak Branding + Stepper */}
       <div className="bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] shadow-lg">
-        <div className="px-6 py-4">
-          <button
-            onClick={() => router.push('/leads')}
-            className="flex items-center text-white/90 hover:text-white mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver a leads
-          </button>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                {lead.dealId} {country.flag}
-              </h1>
-              <p className="text-white/90">Trámite de Financiamiento</p>
-            </div>
+        <div className="px-6 pt-3 pb-4">
+          <div className="flex items-center justify-between mb-3">
+            <button
+              onClick={() => router.push('/leads')}
+              className="flex items-center text-white/90 hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Volver a leads
+            </button>
             <div className="text-right">
-              <p className="text-sm text-white/70">Última actualización</p>
-              <p className="text-sm font-medium text-white">{formatDate(lead.fechaUltimaActualizacion)}</p>
+              <p className="text-xs text-white/70">Última actualización</p>
+              <p className="text-xs font-medium text-white">{formatDate(lead.fechaUltimaActualizacion)}</p>
             </div>
           </div>
           
-          {/* Stepper integrado */}
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-xl font-bold text-white">
+              {lead.dealId} {country.flag} <span className="text-sm font-normal text-white/80 ml-2">Trámite de Financiamiento</span>
+            </h1>
+          </div>
+          
+          {/* Stepper integrado - compacto */}
           <TramiteStepper
             etapaActual={lead.etapaActual}
             estadoOferta={lead.estadoOferta}
@@ -286,4 +286,5 @@ export default function LeadDetailPage() {
     </div>
   );
 }
+
 

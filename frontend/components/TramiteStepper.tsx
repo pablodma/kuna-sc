@@ -71,17 +71,17 @@ export default function TramiteStepper({
 
   const getIcon = (status: TramiteStatus) => {
     if (status === TramiteStatus.COMPLETADO) {
-      return <Check className="w-5 h-5" />;
+      return <Check className="w-4 h-4" />;
     }
     if (status === TramiteStatus.RECHAZADO) {
-      return <XCircle className="w-5 h-5" />;
+      return <XCircle className="w-4 h-4" />;
     }
-    return <Circle className="w-5 h-5" />;
+    return <Circle className="w-4 h-4" />;
   };
 
   return (
-    <div className="w-full py-6">
-      <div className="flex items-center justify-between max-w-4xl mx-auto">
+    <div className="w-full py-3">
+      <div className="flex items-center justify-between max-w-3xl mx-auto">
         {steps.map((step, index) => {
           const styles = getStepStyle(step, index);
           const showLine = index < steps.length - 1;
@@ -96,16 +96,16 @@ export default function TramiteStepper({
               >
                 <div
                   className={`
-                    w-12 h-12 rounded-full border-2 flex items-center justify-center
+                    w-10 h-10 rounded-full border-2 flex items-center justify-center
                     transition-all duration-300 ${styles.circle}
                   `}
                 >
                   {getIcon(step.status)}
                 </div>
-                <span className={`mt-2 text-sm ${styles.label}`}>
+                <span className={`mt-1.5 text-sm ${styles.label}`}>
                   {step.label}
                 </span>
-                <span className="text-xs text-white/60 mt-1">
+                <span className="text-xs text-white/60 mt-0.5">
                   {step.status === TramiteStatus.COMPLETADO && '✓ Completado'}
                   {step.status === TramiteStatus.EN_PROCESO && '⏳ En proceso'}
                   {step.status === TramiteStatus.PENDIENTE && '○ Pendiente'}
