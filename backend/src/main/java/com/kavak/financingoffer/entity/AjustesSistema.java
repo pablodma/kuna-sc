@@ -16,7 +16,7 @@ public class AjustesSistema {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     
     @Column(name = "porcentaje_maximo", nullable = false)
     private Integer porcentajeMaximo;
