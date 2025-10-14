@@ -259,97 +259,109 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Titular Principal */}
+        {/* Titulares (Principal + Adicionales en una sola card) */}
         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900">Titular Principal</h3>
-            <span className="text-sm text-gray-500">(Datos del lead)</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-              <input
-                {...register('cliente.nombre', { required: 'Nombre es requerido' })}
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-              />
-              {errors.cliente?.nombre && (
-                <p className="mt-1 text-sm text-red-600">{errors.cliente.nombre.message}</p>
-              )}
+              <h3 className="text-lg font-bold text-gray-900">Titulares del Crédito</h3>
+              <p className="text-xs text-gray-500 mt-1">Al menos un titular es requerido</p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
-              <input
-                {...register('cliente.apellido', { required: 'Apellido es requerido' })}
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-              />
-              {errors.cliente?.apellido && (
-                <p className="mt-1 text-sm text-red-600">{errors.cliente.apellido.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-              <input
-                {...register('cliente.dni', { required: 'DNI es requerido' })}
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-              />
-              {errors.cliente?.dni && (
-                <p className="mt-1 text-sm text-red-600">{errors.cliente.dni.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Ingresos Anuales</label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
-                  {leadData.countryCode === 'AR' ? '$' : '$'}
-                </span>
-                <input
-                  {...register('cliente.ingresosAnuales', {
-                    required: 'Ingresos anuales es requerido',
-                    min: { value: 0, message: 'Los ingresos deben ser positivos' }
-                  })}
-                  type="number"
-                  className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-                  placeholder="0"
-                />
-              </div>
-              {errors.cliente?.ingresosAnuales && (
-                <p className="mt-1 text-sm text-red-600">{errors.cliente.ingresosAnuales.message}</p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Titulares Adicionales */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900">Titulares Adicionales</h3>
             <button
               type="button"
               onClick={addTitular}
-              className="flex items-center px-3 py-2 bg-[#2E5BFF] text-white rounded-lg hover:bg-[#00D4AA] transition-colors text-sm font-medium"
+              disabled={simulationResults !== null}
+              className="flex items-center px-3 py-2 bg-[#2E5BFF] text-white rounded-lg hover:bg-[#00D4AA] transition-colors text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               <Plus className="w-4 h-4 mr-1" />
               Agregar Titular
             </button>
           </div>
 
+          {/* Titular Principal */}
+          <div className="border-2 border-[#2E5BFF] rounded-lg p-4 bg-blue-50 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-bold text-gray-900">Titular Principal</h4>
+              <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Principal</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                <input
+                  {...register('cliente.nombre', { required: 'Nombre es requerido' })}
+                  type="text"
+                  disabled={simulationResults !== null}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                />
+                {errors.cliente?.nombre && (
+                  <p className="mt-1 text-sm text-red-600">{errors.cliente.nombre.message}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+                <input
+                  {...register('cliente.apellido', { required: 'Apellido es requerido' })}
+                  type="text"
+                  disabled={simulationResults !== null}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                />
+                {errors.cliente?.apellido && (
+                  <p className="mt-1 text-sm text-red-600">{errors.cliente.apellido.message}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">DNI</label>
+                <input
+                  {...register('cliente.dni', { required: 'DNI es requerido' })}
+                  type="text"
+                  disabled={simulationResults !== null}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                />
+                {errors.cliente?.dni && (
+                  <p className="mt-1 text-sm text-red-600">{errors.cliente.dni.message}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ingresos Anuales</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                    {leadData.countryCode === 'AR' ? '$' : '$'}
+                  </span>
+                  <input
+                    {...register('cliente.ingresosAnuales', {
+                      required: 'Ingresos anuales es requerido',
+                      min: { value: 0, message: 'Los ingresos deben ser positivos' }
+                    })}
+                    type="number"
+                    disabled={simulationResults !== null}
+                    className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    placeholder="0"
+                  />
+                </div>
+                {errors.cliente?.ingresosAnuales && (
+                  <p className="mt-1 text-sm text-red-600">{errors.cliente.ingresosAnuales.message}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Titulares Adicionales */}
           {titulares.length === 0 && (
-            <p className="text-sm text-gray-500 italic">
-              No hay titulares adicionales. Haz click en "Agregar Titular" para añadir uno.
-            </p>
+            <div className="text-center py-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+              <p className="text-sm text-gray-500">
+                ¿Se necesita más de un titular? Haz click en "Agregar Titular" arriba
+              </p>
+            </div>
           )}
 
           {titulares.map((titular, index) => (
             <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
               <div className="flex justify-between items-center mb-3">
-                <h4 className="font-semibold text-gray-900">Titular #{index + 2}</h4>
+                <h4 className="font-semibold text-gray-900">Titular Adicional #{index + 1}</h4>
                 <button
                   type="button"
                   onClick={() => removeTitular(index)}
-                  className="text-red-600 hover:text-red-800 transition-colors"
+                  disabled={simulationResults !== null}
+                  className="text-red-600 hover:text-red-800 transition-colors disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -361,7 +373,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                     type="text"
                     value={titular.nombre}
                     onChange={(e) => updateTitular(index, 'nombre', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                    disabled={simulationResults !== null}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -370,7 +383,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                     type="text"
                     value={titular.apellido}
                     onChange={(e) => updateTitular(index, 'apellido', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                    disabled={simulationResults !== null}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -379,7 +393,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                     type="text"
                     value={titular.dni}
                     onChange={(e) => updateTitular(index, 'dni', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                    disabled={simulationResults !== null}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -390,7 +405,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                       type="number"
                       value={titular.ingresosAnuales || ''}
                       onChange={(e) => updateTitular(index, 'ingresosAnuales', parseFloat(e.target.value) || 0)}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                      disabled={simulationResults !== null}
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                       placeholder="0"
                     />
                   </div>
@@ -410,7 +426,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             <button
               type="button"
               onClick={addEscenario}
-              disabled={escenarios.length >= 3}
+              disabled={escenarios.length >= 3 || simulationResults !== null}
               className="flex items-center px-3 py-2 bg-[#2E5BFF] text-white rounded-lg hover:bg-[#00D4AA] transition-colors text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               <Plus className="w-4 h-4 mr-1" />
@@ -444,7 +460,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                     <button
                       type="button"
                       onClick={() => removeEscenario(escenario.id)}
-                      className="text-red-600 hover:text-red-800 transition-colors"
+                      disabled={simulationResults !== null}
+                      className="text-red-600 hover:text-red-800 transition-colors disabled:text-gray-400 disabled:cursor-not-allowed"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -466,7 +483,8 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                       step="1"
                       value={escenario.porcentajeFinanciar}
                       onChange={(e) => updateEscenario(escenario.id, parseInt(e.target.value))}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#2E5BFF]"
+                      disabled={simulationResults !== null}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#2E5BFF] disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
                       <span>1%</span>
