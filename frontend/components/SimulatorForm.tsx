@@ -278,7 +278,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
           </div>
 
           {/* Titular Principal */}
-          <div className="border-2 border-[#2E5BFF] rounded-lg p-4 bg-blue-50 mb-4">
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 mb-4">
             <div className="flex items-center justify-between mb-3">
               <h4 className="font-bold text-gray-900">Titular Principal</h4>
               <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Principal</span>
@@ -449,7 +449,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             {escenarios.map((escenario, index) => (
               <div 
                 key={escenario.id} 
-                className="border-2 border-[#2E5BFF] rounded-lg p-4 bg-blue-50 animate-scaleIn"
+                className="border border-gray-200 rounded-lg p-4 bg-gray-50 animate-scaleIn"
                 style={{
                   animationDelay: `${index * 100}ms`
                 }}

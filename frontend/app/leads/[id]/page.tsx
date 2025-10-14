@@ -67,7 +67,7 @@ export default function LeadDetailPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Header with Kavak Branding */}
+      {/* Header with Kavak Branding + Stepper */}
       <div className="bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] shadow-lg">
         <div className="px-6 py-4">
           <button
@@ -77,7 +77,7 @@ export default function LeadDetailPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver a leads
           </button>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-bold text-white">
                 {lead.dealId} {country.flag}
@@ -89,12 +89,8 @@ export default function LeadDetailPage() {
               <p className="text-sm font-medium text-white">{formatDate(lead.fechaUltimaActualizacion)}</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Stepper */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="px-6">
+          
+          {/* Stepper integrado */}
           <TramiteStepper
             etapaActual={lead.etapaActual}
             estadoOferta={lead.estadoOferta}

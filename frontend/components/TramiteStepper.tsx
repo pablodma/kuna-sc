@@ -32,40 +32,40 @@ export default function TramiteStepper({
 
     if (isRejected) {
       return {
-        circle: 'bg-red-100 border-red-500 text-red-600',
-        line: 'bg-red-200',
-        label: 'text-red-600 font-semibold'
+        circle: 'bg-red-500 border-red-400 text-white',
+        line: 'bg-white/30',
+        label: 'text-red-300 font-semibold'
       };
     }
 
     if (isCompleted) {
       return {
-        circle: 'bg-green-100 border-green-500 text-green-600',
-        line: 'bg-green-300',
-        label: 'text-green-600 font-medium'
+        circle: 'bg-white border-white text-green-600',
+        line: 'bg-white/50',
+        label: 'text-white font-medium'
       };
     }
 
     if (isActive) {
       return {
-        circle: 'bg-blue-100 border-[#2E5BFF] text-[#2E5BFF] ring-4 ring-blue-100',
-        line: 'bg-gray-200',
-        label: 'text-[#2E5BFF] font-semibold'
+        circle: 'bg-white border-white text-[#2E5BFF] ring-4 ring-white/30',
+        line: 'bg-white/30',
+        label: 'text-white font-bold'
       };
     }
 
     if (isPending) {
       return {
-        circle: 'bg-gray-50 border-gray-300 text-gray-400',
-        line: 'bg-gray-200',
-        label: 'text-gray-500'
+        circle: 'bg-white/10 border-white/40 text-white/60',
+        line: 'bg-white/20',
+        label: 'text-white/70'
       };
     }
 
     return {
-      circle: 'bg-gray-100 border-gray-400 text-gray-500',
-      line: 'bg-gray-200',
-      label: 'text-gray-600'
+      circle: 'bg-white/20 border-white/50 text-white/70',
+      line: 'bg-white/30',
+      label: 'text-white/80'
     };
   };
 
@@ -105,7 +105,7 @@ export default function TramiteStepper({
                 <span className={`mt-2 text-sm ${styles.label}`}>
                   {step.label}
                 </span>
-                <span className="text-xs text-gray-400 mt-1">
+                <span className="text-xs text-white/60 mt-1">
                   {step.status === TramiteStatus.COMPLETADO && '✓ Completado'}
                   {step.status === TramiteStatus.EN_PROCESO && '⏳ En proceso'}
                   {step.status === TramiteStatus.PENDIENTE && '○ Pendiente'}
