@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.kavak</groupId>
     <artifactId>financing-offer-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>financing-offer-api</name>
     <description>API for financing offer simulation</description>
     <properties>
