@@ -15,6 +15,7 @@ import {
 } from '@/lib/leads';
 import { COUNTRIES } from '@/lib/countries';
 import { Search, Filter, ArrowUpDown, Car, User, Clock } from 'lucide-react';
+import CountrySelector from '@/components/CountrySelector';
 
 export default function LeadsPage() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function LeadsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header with Kavak Branding */}
         <div className="mb-8 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] rounded-xl shadow-lg p-6 text-white">
@@ -70,15 +71,18 @@ export default function LeadsPage() {
               <h1 className="text-3xl font-bold mb-2">Leads y Oportunidades</h1>
               <p className="text-white/90">Gestiona todas las oportunidades de financiamiento</p>
             </div>
-            <div className="text-right">
-              <p className="text-sm font-semibold">KAVAK</p>
-              <p className="text-[#00D4AA] font-bold">CRÉDITO</p>
+            <div className="flex items-center space-x-4">
+              <CountrySelector />
+              <div className="text-right">
+                <p className="text-sm font-semibold">KAVAK</p>
+                <p className="text-[#00D4AA] font-bold">CRÉDITO</p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm p-4 mb-6 border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Search */}
             <div className="relative">

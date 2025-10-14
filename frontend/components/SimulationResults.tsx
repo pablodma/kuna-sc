@@ -58,7 +58,7 @@ export default function SimulationResults({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-scaleIn">
       <div className="flex items-center mb-4">
         <TrendingUp className="w-6 h-6 text-[#2E5BFF] mr-2" />
         <h3 className="text-xl font-bold text-gray-900">

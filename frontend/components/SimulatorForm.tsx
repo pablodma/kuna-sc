@@ -259,7 +259,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
   return (
     <div className="space-y-6">
       {/* Datos del Vehículo - Read Only */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 border-2 border-gray-300">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 border-2 border-gray-300 animate-fadeIn">
         <div className="flex items-center mb-4">
           <Car className="w-6 h-6 text-[#2E5BFF] mr-2" />
           <h3 className="text-lg font-bold text-gray-900">Vehículo</h3>
@@ -301,7 +301,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Titular Principal */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">Titular Principal</h3>
             <span className="text-sm text-gray-500">(Datos del lead)</span>
@@ -342,14 +342,20 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Ingresos Anuales</label>
-              <input
-                {...register('cliente.ingresosAnuales', {
-                  required: 'Ingresos anuales es requerido',
-                  min: { value: 0, message: 'Los ingresos deben ser positivos' }
-                })}
-                type="number"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-              />
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                  {leadData.countryCode === 'AR' ? '$' : '$'}
+                </span>
+                <input
+                  {...register('cliente.ingresosAnuales', {
+                    required: 'Ingresos anuales es requerido',
+                    min: { value: 0, message: 'Los ingresos deben ser positivos' }
+                  })}
+                  type="number"
+                  className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                  placeholder="0"
+                />
+              </div>
               {errors.cliente?.ingresosAnuales && (
                 <p className="mt-1 text-sm text-red-600">{errors.cliente.ingresosAnuales.message}</p>
               )}
@@ -358,7 +364,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
         </div>
 
         {/* Titulares Adicionales */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">Titulares Adicionales</h3>
             <button
@@ -419,12 +425,16 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Ingresos Anuales</label>
-                  <input
-                    type="number"
-                    value={titular.ingresosAnuales || ''}
-                    onChange={(e) => updateTitular(index, 'ingresosAnuales', parseFloat(e.target.value) || 0)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
-                  />
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                    <input
+                      type="number"
+                      value={titular.ingresosAnuales || ''}
+                      onChange={(e) => updateTitular(index, 'ingresosAnuales', parseFloat(e.target.value) || 0)}
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent"
+                      placeholder="0"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -432,7 +442,7 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
         </div>
 
         {/* Escenarios de Simulación */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <Sparkles className="w-6 h-6 text-[#2E5BFF] mr-2" />
