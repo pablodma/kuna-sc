@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface OfertaFinanciamientoRepository extends JpaRepository<OfertaFinanciamiento, UUID> {
-    List<OfertaFinanciamiento> findByUserId(UUID userId);
+    List<OfertaFinanciamiento> findByCreatedBy(UUID createdBy);
     List<OfertaFinanciamiento> findByDealId(String dealId);
 }
 
