@@ -93,53 +93,44 @@ bd88310 - fix: Map User.passwordHash to password column and bump version to 0.0.
 
 ---
 
-## 🔐 Tareas Pendientes (Seguridad)
+## 🔐 Credenciales de Acceso ADMIN
 
-### ⚠️ IMPORTANTE: Configurar Usuario ADMIN
+### ✅ Usuario ADMIN Configurado
 
-Actualmente existe un usuario `admin` en la base de datos de Railway, pero su password no está sincronizado. Para configurar acceso ADMIN:
+El usuario admin está completamente configurado y funcional:
 
-#### Opción 1: Usando Railway CLI + psql
-```bash
-railway run psql $DATABASE_URL
+**Credenciales:**
+- **Username:** `admin`
+- **Password:** `admin123`
 
-# Dentro de psql:
-UPDATE users 
-SET password_hash = '$2a$10$<hash_generado_con_bcrypt>' 
-WHERE username = 'admin';
-```
+El password se inicializa automáticamente al arrancar la aplicación mediante el `DataInitializer` component.
 
-#### Opción 2: Crear nuevo usuario ADMIN via API
-1. Registrar un usuario nuevo:
-```bash
-curl -X POST https://kuna-sc-production.up.railway.app/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username":"miadmin","password":"MiPassword123!"}'
-```
-
-2. Conectarse a Railway DB y promover a ADMIN:
-```sql
-UPDATE users SET role = 'ADMIN' WHERE username = 'miadmin';
-```
-
-3. Hacer login para obtener token:
+**Ejemplo de Login:**
 ```bash
 curl -X POST https://kuna-sc-production.up.railway.app/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"miadmin","password":"MiPassword123!"}'
+  -d '{"username":"admin","password":"admin123"}'
+```
+
+**Respuesta:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "role": "ADMIN"
+}
 ```
 
 ---
 
 ## 🧪 Testeo del Endpoint
 
-### Ejemplo: Acceder a Settings con Autenticación
+### Ejemplo Completo: Acceder a Settings con Autenticación
 
 ```bash
-# 1. Login para obtener token
+# 1. Login para obtener token (usa credenciales admin/admin123)
 TOKEN=$(curl -X POST https://kuna-sc-production.up.railway.app/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"tu_password"}' \
+  -d '{"username":"admin","password":"admin123"}' \
   | jq -r '.token')
 
 # 2. Acceder al endpoint protegido
@@ -172,7 +163,8 @@ curl -X GET https://kuna-sc-production.up.railway.app/api/settings \
 ✅ **Conectado a PostgreSQL exitosamente**  
 ✅ **Endpoints testeados y validados**  
 ✅ **Código limpio y sin archivos temporales**  
-⚠️ **Pendiente:** Configurar usuario ADMIN con password conocido
+✅ **Usuario ADMIN configurado (admin/admin123)**  
+✅ **Autenticación JWT funcionando correctamente**
 
 ---
 
