@@ -121,52 +121,53 @@ export default function SimulationResults({
 
   return (
     <div className="space-y-6 animate-scaleIn">
-      {/* Header con Botones de Acción */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
-          <TrendingUp className="w-6 h-6 text-[#2E5BFF] mr-2" />
-          <h3 className="text-xl font-bold text-gray-900">
-            Resultados de Simulación
-          </h3>
-        </div>
-        
-        {/* Botones de Compartir */}
-        <div className="flex gap-2">
-          <button
-            onClick={handleShare}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-          >
-            <Share2 className="w-4 h-4 mr-2" />
-            Compartir
-          </button>
-        </div>
+      {/* Header */}
+      <div className="flex items-center mb-4">
+        <TrendingUp className="w-6 h-6 text-[#2E5BFF] mr-2" />
+        <h3 className="text-xl font-bold text-gray-900">
+          Resultados de Simulación
+        </h3>
       </div>
 
-      {/* Grid de 3 Escenarios Lado a Lado */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {resultados.map((escenario, escIdx) => (
-          <div
-            key={escenario.escenarioId}
-            className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#2E5BFF] transition-all"
-          >
-            {/* Header del Escenario */}
-            <div className="bg-gradient-to-br from-[#2E5BFF] to-[#00D4AA] p-4 text-white">
-              <div className="text-center">
-                <h4 className="text-2xl font-bold mb-1">Escenario {escIdx + 1}</h4>
-                <p className="text-sm text-white/90 mb-2">
-                  Financiando el {escenario.porcentaje}%
-                </p>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 mt-2">
-                  <p className="text-xs text-white/80">Monto Total</p>
-                  <p className="text-xl font-bold">
-                    {formatCurrency(escenario.montoFinanciar)}
-                  </p>
+      {/* Escenarios en Layout Vertical */}
+      <div className="space-y-6">
+        {resultados.map((escenario, escIdx) => {
+          const hasSelectedOption = escenario.opciones.some(op => 
+            isSelected(escenario.escenarioId, op.cuotas)
+          );
+
+          return (
+            <div
+              key={escenario.escenarioId}
+              className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#2E5BFF] transition-all"
+            >
+              {/* Header del Escenario - Más Compacto */}
+              <div className="bg-gradient-to-br from-[#2E5BFF] to-[#00D4AA] p-4 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xl font-bold">Escenario {escIdx + 1}</h4>
+                    <p className="text-sm text-white/90">
+                      Financiando el {escenario.porcentaje}% • {formatCurrency(escenario.montoFinanciar)}
+                    </p>
+                  </div>
+                  {/* Botón Compartir por Escenario */}
+                  {hasSelectedOption && (
+                    <button
+                      onClick={() => {
+                        // TODO: Compartir solo este escenario
+                        handleShare();
+                      }}
+                      className="flex items-center px-3 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-lg font-medium transition-all text-sm"
+                    >
+                      <Share2 className="w-4 h-4 mr-1" />
+                      Compartir
+                    </button>
+                  )}
                 </div>
               </div>
-            </div>
 
-            {/* Opciones de Cuotas */}
-            <div className="p-4 space-y-3">
+              {/* Opciones de Cuotas - Layout Compacto */}
+              <div className="p-4 space-y-2">
               {escenario.opciones.map((opcion) => {
                 const selected = isSelected(escenario.escenarioId, opcion.cuotas);
                 const expanded = isDetailExpanded(escenario.escenarioId, opcion.cuotas);
@@ -183,77 +184,82 @@ export default function SimulationResults({
                     className={`border-2 rounded-lg overflow-hidden transition-all ${
                       selected
                         ? 'border-green-500 bg-green-50'
-                        : 'border-gray-200 hover:border-[#2E5BFF]'
+                        : 'border-gray-200 hover:border-blue-200'
                     }`}
                   >
-                    {/* Resumen de la Opción */}
+                    {/* Resumen Compacto en Una Sola Fila */}
                     <div className="p-3">
-                      <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center">
-                          <span className="text-lg font-bold text-gray-900">
+                      <div className="flex items-center justify-between gap-4">
+                        {/* Meses + Chevron */}
+                        <div className="flex items-center gap-2 min-w-[100px]">
+                          <span className="text-base font-bold text-gray-900">
                             {opcion.cuotas} meses
                           </span>
                           <button
                             onClick={() => toggleDetails(escenario.escenarioId, opcion.cuotas)}
-                            className="ml-2 text-[#2E5BFF] hover:text-[#00D4AA] transition-colors"
+                            className="text-gray-400 hover:text-[#2E5BFF] transition-colors"
                           >
                             {expanded ? (
-                              <ChevronUp className="w-5 h-5" />
+                              <ChevronUp className="w-4 h-4" />
                             ) : (
-                              <ChevronDown className="w-5 h-5" />
+                              <ChevronDown className="w-4 h-4" />
                             )}
                           </button>
                         </div>
-                        <div className="text-right">
+
+                        {/* Cuota Mensual */}
+                        <div className="flex-1 min-w-[140px]">
                           <p className="text-xs text-gray-500">Cuota mensual</p>
-                          <p className="text-lg font-bold text-[#2E5BFF]">
+                          <p className="text-base font-bold text-[#2E5BFF]">
                             {formatCurrency(opcion.valorCuota)}
                           </p>
                         </div>
-                      </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-xs mb-2">
-                        <div className="bg-gray-50 rounded p-2">
-                          <p className="text-gray-500">TNA</p>
-                          <p className="font-semibold text-gray-900">
+                        {/* TNA */}
+                        <div className="min-w-[70px]">
+                          <p className="text-xs text-gray-500">TNA</p>
+                          <p className="text-sm font-semibold text-gray-900">
                             {opcion.tna.toFixed(2)}%
                           </p>
                         </div>
-                        <div className="bg-gray-50 rounded p-2">
-                          <p className="text-gray-500">TEA</p>
-                          <p className="font-semibold text-gray-900">
+
+                        {/* TEA */}
+                        <div className="min-w-[70px]">
+                          <p className="text-xs text-gray-500">TEA</p>
+                          <p className="text-sm font-semibold text-gray-900">
                             {opcion.tea.toFixed(2)}%
                           </p>
                         </div>
-                      </div>
 
-                      <button
-                        onClick={() =>
-                          handleSelectOption(
-                            escenario.escenarioId,
-                            escenario.porcentaje,
-                            escenario.montoFinanciar,
-                            opcion.cuotas,
-                            opcion.valorCuota,
-                            opcion.tna,
-                            opcion.tea
-                          )
-                        }
-                        className={`w-full py-2 rounded-lg font-medium transition-all flex items-center justify-center ${
-                          selected
-                            ? 'bg-green-500 text-white'
-                            : 'bg-[#2E5BFF] text-white hover:bg-[#00D4AA]'
-                        }`}
-                      >
-                        {selected ? (
-                          <>
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Seleccionada
-                          </>
-                        ) : (
-                          'Elegir esta opción'
-                        )}
-                      </button>
+                        {/* Botón Elegir - Apagado por defecto */}
+                        <button
+                          onClick={() =>
+                            handleSelectOption(
+                              escenario.escenarioId,
+                              escenario.porcentaje,
+                              escenario.montoFinanciar,
+                              opcion.cuotas,
+                              opcion.valorCuota,
+                              opcion.tna,
+                              opcion.tea
+                            )
+                          }
+                          className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 min-w-[120px] justify-center ${
+                            selected
+                              ? 'bg-green-500 text-white shadow-md'
+                              : 'bg-gray-200 text-gray-600 hover:bg-[#2E5BFF] hover:text-white hover:shadow-md'
+                          }`}
+                        >
+                          {selected ? (
+                            <>
+                              <CheckCircle className="w-4 h-4" />
+                              Elegida
+                            </>
+                          ) : (
+                            'Elegir'
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Detalle Mensual Expandible */}
@@ -294,9 +300,10 @@ export default function SimulationResults({
                   </div>
                 );
               })}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {selectedOption && (
