@@ -33,6 +33,11 @@ spring:
           lob:
             non_contextual_creation: true
   
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+  
   security:
     user:
       name: ${ADMIN_USERNAME:admin}
