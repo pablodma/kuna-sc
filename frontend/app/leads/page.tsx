@@ -239,12 +239,12 @@ export default function LeadsPage() {
         {/* Leads Sin Asignar - Priority Section */}
         {unassignedLeads.length > 0 && (
           <div className="mb-8 animate-fadeIn">
-            <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl p-4 text-white flex items-center justify-between">
+            <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl p-4 text-white flex items-center justify-between shadow-lg">
               <div className="flex items-center">
                 <Clock className="w-6 h-6 mr-3 animate-pulse" />
                 <div>
                   <h2 className="text-xl font-bold">Leads Sin Asignar</h2>
-                  <p className="text-sm text-white/90">¡Toma un lead y comienza a trabajar!</p>
+                  <p className="text-sm text-white/90">Cola de espera - Toma un lead y comienza a trabajar</p>
                 </div>
               </div>
               <div className="bg-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
@@ -254,62 +254,117 @@ export default function LeadsPage() {
             </div>
 
             <div className="bg-white rounded-b-xl shadow-lg overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                {unassignedLeads.map((lead) => {
-                  const aging = getAging(lead.fechaCreacion);
-                  const country = COUNTRIES[lead.countryCode];
-                  
-                  return (
-                    <div
-                      key={lead.id}
-                      className="border-2 border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all hover:border-[#2E5BFF] bg-gradient-to-br from-white to-gray-50"
-                    >
-                      {/* Header con Prioridad y Aging */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${PRIORITY_COLORS[lead.prioridad]}`}>
-                          {PRIORITY_LABELS[lead.prioridad]}
-                        </span>
-                        <span className={`px-3 py-1 rounded-lg text-xs font-bold border-2 ${getAgingColor(aging)}`}>
-                          🕐 {aging} {aging === 1 ? 'día' : 'días'}
-                        </span>
-                      </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Aging
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Prioridad
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Deal ID
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Cliente
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Vehículo
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Precio
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Fecha Creación
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Acción
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {unassignedLeads.map((lead) => {
+                      const aging = getAging(lead.fechaCreacion);
+                      const country = COUNTRIES[lead.countryCode];
+                      
+                      return (
+                        <tr
+                          key={lead.id}
+                          className="hover:bg-orange-50 transition-colors cursor-pointer"
+                          onClick={() => router.push(`/leads/${lead.id}`)}
+                        >
+                          {/* Aging */}
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className={`px-3 py-1 rounded-lg text-xs font-bold border-2 inline-flex items-center ${getAgingColor(aging)}`}>
+                              🕐 {aging}d
+                            </span>
+                          </td>
 
-                      {/* Información del Cliente */}
-                      <div className="mb-3">
-                        <p className="font-bold text-gray-900 flex items-center">
-                          <User className="w-4 h-4 mr-2 text-[#2E5BFF]" />
-                          {lead.cliente.nombre} {lead.cliente.apellido}
-                        </p>
-                        <p className="text-sm text-gray-600 ml-6">{country.flag} {lead.dealId}</p>
-                      </div>
+                          {/* Prioridad */}
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${PRIORITY_COLORS[lead.prioridad]}`}>
+                              {PRIORITY_LABELS[lead.prioridad]}
+                            </span>
+                          </td>
 
-                      {/* Información del Vehículo */}
-                      <div className="mb-3 bg-blue-50 rounded-lg p-2">
-                        <p className="text-sm font-semibold text-gray-900 flex items-center">
-                          <Car className="w-4 h-4 mr-2 text-[#00D4AA]" />
-                          {lead.vehiculo.marca} {lead.vehiculo.modelo}
-                        </p>
-                        <p className="text-xs text-gray-600 ml-6">
-                          {lead.vehiculo.anio} • {formatCurrency(lead.vehiculo.precio, lead.countryCode)}
-                        </p>
-                      </div>
+                          {/* Deal ID + País */}
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <span className="text-sm font-medium text-gray-900">{lead.dealId}</span>
+                              <span className="ml-2 text-lg">{country.flag}</span>
+                            </div>
+                          </td>
 
-                      {/* Fecha de Creación */}
-                      <p className="text-xs text-gray-500 mb-3">
-                        Creado: {formatDate(lead.fechaCreacion)}
-                      </p>
+                          {/* Cliente */}
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">
+                              {lead.cliente.nombre} {lead.cliente.apellido}
+                            </div>
+                            <div className="text-xs text-gray-500">{lead.cliente.dni}</div>
+                          </td>
 
-                      {/* Botón Tomar Lead */}
-                      <button
-                        onClick={() => handleTakeLead(lead.id)}
-                        className="w-full py-2 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] text-white rounded-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center"
-                      >
-                        <User className="w-4 h-4 mr-2" />
-                        Tomar Lead
-                      </button>
-                    </div>
-                  );
-                })}
+                          {/* Vehículo */}
+                          <td className="px-4 py-3">
+                            <div className="text-sm font-medium text-gray-900">
+                              {lead.vehiculo.marca} {lead.vehiculo.modelo}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {lead.vehiculo.version} • {lead.vehiculo.anio}
+                            </div>
+                          </td>
+
+                          {/* Precio */}
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div className="text-sm font-semibold text-gray-900">
+                              {formatCurrency(lead.vehiculo.precio, lead.countryCode)}
+                            </div>
+                          </td>
+
+                          {/* Fecha Creación */}
+                          <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-500">
+                            {formatDate(lead.fechaCreacion)}
+                          </td>
+
+                          {/* Acción */}
+                          <td className="px-4 py-3 whitespace-nowrap text-center">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTakeLead(lead.id);
+                              }}
+                              className="px-4 py-2 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] text-white rounded-lg font-semibold hover:shadow-lg transition-all text-sm inline-flex items-center"
+                            >
+                              <User className="w-3 h-3 mr-1" />
+                              Tomar
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
