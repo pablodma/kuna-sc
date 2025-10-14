@@ -41,13 +41,5 @@ public class AuthController {
         
         return ResponseEntity.ok(new AuthResponse(token, user.getRole().name()));
     }
-    
-    @PostMapping("/promote-to-admin")
-    public ResponseEntity<AuthResponse> promoteToAdmin(@RequestParam String username) {
-        User user = userService.promoteToAdmin(username);
-        String token = jwtUtil.generateToken(user);
-        
-        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name()));
-    }
 }
 

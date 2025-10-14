@@ -42,12 +42,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
-    
-    public User promoteToAdmin(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-        user.setRole(User.Role.ADMIN);
-        return userRepository.save(user);
-    }
 }
 
