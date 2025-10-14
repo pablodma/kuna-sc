@@ -23,9 +23,9 @@ public class FinancingOfferService {
     public SimulacionResponse crearSimulacion(FinancingOfferRequest request, Authentication authentication) {
         // Validar que el porcentaje no exceda el máximo del sistema
         AjustesSistema settings = ajustesService.getCurrentSettings();
-        if (request.getPorcentajeFinanciar() > settings.getPorcentajeMaximo()) {
+        if (request.getPorcentajeFinanciar() > settings.getPorcentajeMaximoFinanciar()) {
             throw new RuntimeException("El porcentaje a financiar excede el máximo permitido: " + 
-                    settings.getPorcentajeMaximo() + "%");
+                    settings.getPorcentajeMaximoFinanciar() + "%");
         }
         
         // Obtener usuario actual
