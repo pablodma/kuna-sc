@@ -23,9 +23,9 @@ public class FinancingOfferService {
     public SimulacionResponse crearSimulacion(FinancingOfferRequest request, Authentication authentication) {
         // Validar que el porcentaje no exceda el máximo del sistema
         AjustesSistema settings = ajustesService.getCurrentSettings();
-        if (request.getPorcentajeFinanciar() > settings.getPorcentajeMaximoFinanciar()) {
+        if (request.getPorcentajeFinanciar() > settings.getPorcentajeMaximo()) {
             throw new RuntimeException("El porcentaje a financiar excede el máximo permitido: " + 
-                    settings.getPorcentajeMaximoFinanciar() + "%");
+                    settings.getPorcentajeMaximo() + "%");
         }
         
         // Obtener usuario actual
@@ -38,17 +38,17 @@ public class FinancingOfferService {
         
         // Guardar oferta en base de datos
         OfertaFinanciamiento oferta = new OfertaFinanciamiento();
-        oferta.setCreatedBy(userId);
-        oferta.setClienteNombre(request.getCliente().getNombre());
-        oferta.setClienteApellido(request.getCliente().getApellido());
-        oferta.setClienteDni(request.getCliente().getDni());
-        oferta.setClienteIngresosAnuales(request.getCliente().getIngresosAnuales());
-        oferta.setVehiculoMarca(request.getVehiculo().getMarca());
-        oferta.setVehiculoModelo(request.getVehiculo().getModelo());
-        oferta.setVehiculoVersion(request.getVehiculo().getVersion());
-        oferta.setVehiculoAnio(request.getVehiculo().getAnio());
-        oferta.setVehiculoSku(request.getVehiculo().getSku());
-        oferta.setMontoTotal(simulacion.getMontoTotal());
+        oferta.setUserId(userId);
+        oferta.setNombre(request.getCliente().getNombre());
+        oferta.setApellido(request.getCliente().getApellido());
+        oferta.setDni(request.getCliente().getDni());
+        oferta.setIngresosAnuales(request.getCliente().getIngresosAnuales());
+        oferta.setMarca(request.getVehiculo().getMarca());
+        oferta.setModelo(request.getVehiculo().getModelo());
+        oferta.setVersion(request.getVehiculo().getVersion());
+        oferta.setAnio(request.getVehiculo().getAnio());
+        oferta.setSku(request.getVehiculo().getSku());
+        oferta.setMontoTotalAuto(simulacion.getMontoTotal());
         oferta.setPorcentajeFinanciar(request.getPorcentajeFinanciar());
         oferta.setMontoFinanciado(simulacion.getMontoFinanciado());
         oferta.setDealId(request.getDealId());
