@@ -1,38 +1,50 @@
-# Sistema de Simulación de Ofertas de Crédito Kavak
+# Kuna SC - Sistema de Financiamiento Multi-País
 
 ## 📋 Descripción
 
-Sistema completo para simular ofertas de crédito automotor con integración de datos del CRM. Permite a los usuarios del backoffice cargar datos del cliente y vehículo, seleccionar el porcentaje a financiar, y generar simulaciones de cuotas con desglose financiero completo.
+Plataforma completa de financiamiento automotor para Argentina y Chile. Sistema modular con 3 APIs especializadas (Oferta, Handoff, Dictamen) que permite simular ofertas de crédito, gestionar entregas y procesar dictámenes de financiamiento.
+
+## 🌎 Multi-País
+
+- **Argentina (AR)**: Implementado ✅
+- **Chile (CL)**: Implementado ✅
+- Arquitectura preparada para expandir a más países
 
 ## 🏗️ Arquitectura
 
-- **Frontend**: React + Next.js 14 con TypeScript
-- **Backend**: Java + Spring Boot 3.x
-- **Base de Datos**: PostgreSQL (Supabase)
+- **Frontend**: React + Next.js 14 con TypeScript (único, adaptable por país)
+- **Backend**: 3 APIs independientes en Java + Spring Boot 3.x
+  - `oferta-api`: Simulación de ofertas de crédito
+  - `handoff-api`: Gestión de entregas (próximamente)
+  - `dictamen-api`: Procesamiento de dictámenes (próximamente)
+- **Base de Datos**: PostgreSQL en Railway (multi-tenant con `country_code`)
 - **Autenticación**: JWT Bearer Token
 - **Estilos**: TailwindCSS
 
 ## 📁 Estructura del Proyecto
 
 ```
-kuna-ar/
-├── backend/                 # API Spring Boot
+kuna-sc/
+├── backend/                 # Oferta API (Spring Boot)
 │   ├── src/main/java/
-│   │   └── com/kavak/financingoffer/
+│   │   └── com/kavak/sc/oferta/
 │   │       ├── controller/  # Controladores REST
-│   │       ├── entity/      # Entidades JPA
+│   │       ├── entity/      # Entidades JPA (con country_code)
 │   │       ├── repository/  # Repositorios
-│   │       ├── service/     # Lógica de negocio
+│   │       ├── service/     # Lógica de negocio multi-país
 │   │       ├── security/    # Configuración JWT
 │   │       └── dto/         # Data Transfer Objects
-│   └── pom.xml
+│   └── pom.xml              # Maven (com.kavak.sc:oferta-api)
 ├── frontend/                # Aplicación Next.js
 │   ├── app/                 # App Router
 │   ├── components/          # Componentes React
-│   ├── lib/                 # Utilidades y API
+│   ├── lib/                 # Utilidades, API y configuración multi-país
+│   │   ├── countries.ts     # Configuración de países
+│   │   └── countryContext.tsx  # Context para país actual
 │   └── store/               # Estado global (Zustand)
 ├── database/                # Scripts SQL
-│   ├── schema.sql           # Esquema completo
+│   ├── schema.sql           # Esquema base
+│   ├── migration_add_country_code.sql  # Migración multi-país
 │   └── README.md            # Documentación BD
 └── README.md                # Este archivo
 ```

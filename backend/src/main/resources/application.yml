@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: financing-offer-api
+    name: oferta-api
   
   main:
     allow-circular-references: true
@@ -52,6 +52,13 @@ cors:
 
 logging:
   level:
-    com.kavak: DEBUG
+    com.kavak.sc: DEBUG
     org.springframework.security: DEBUG
+
+# Multi-country Configuration
+app:
+  default:
+    country: ${DEFAULT_COUNTRY:AR}
+  supported:
+    countries: ${SUPPORTED_COUNTRIES:AR,CL}
 
