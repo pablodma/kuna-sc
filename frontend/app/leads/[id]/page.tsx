@@ -54,11 +54,22 @@ export default function LeadDetailPage() {
     }).format(date);
   };
 
+  // Estado para el sticky header
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Header with Kavak Branding */}
       <div className="bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="px-6 py-4">
           <button
             onClick={() => router.push('/leads')}
             className="flex items-center text-white/90 hover:text-white mb-4 transition-colors"
@@ -71,9 +82,7 @@ export default function LeadDetailPage() {
               <h1 className="text-2xl font-bold text-white">
                 {lead.dealId} {country.flag}
               </h1>
-              <p className="text-white/90">
-                {lead.cliente.nombre} {lead.cliente.apellido} • {lead.vehiculo.marca} {lead.vehiculo.modelo}
-              </p>
+              <p className="text-white/90">Trámite de Financiamiento</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-white/70">Última actualización</p>
@@ -85,7 +94,7 @@ export default function LeadDetailPage() {
 
       {/* Stepper */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="px-6">
           <TramiteStepper
             etapaActual={lead.etapaActual}
             estadoOferta={lead.estadoOferta}
@@ -96,127 +105,94 @@ export default function LeadDetailPage() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Sidebar - Info Cards */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Cliente Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 p-2 rounded-lg mr-3">
-                  <User className="w-5 h-5 text-[#2E5BFF]" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Cliente</h3>
+      {/* Sticky Info Bar - Cliente y Vehículo */}
+      <div 
+        className={`sticky top-0 z-40 bg-white border-b border-gray-200 transition-all duration-300 ${
+          isScrolled ? 'shadow-md py-2' : 'py-4'
+        }`}
+      >
+        <div className="px-6">
+          <div className="flex items-center justify-between gap-6">
+            {/* Cliente Info */}
+            <div className="flex items-center gap-4 flex-1">
+              <div className={`bg-blue-100 p-2 rounded-lg transition-all ${isScrolled ? 'scale-90' : ''}`}>
+                <User className={`text-[#2E5BFF] transition-all ${isScrolled ? 'w-4 h-4' : 'w-5 h-5'}`} />
               </div>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500">Nombre completo</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {lead.cliente.nombre} {lead.cliente.apellido}
+              <div className={`transition-all ${isScrolled ? 'space-y-0' : 'space-y-1'}`}>
+                <p className={`font-bold text-gray-900 transition-all ${isScrolled ? 'text-sm' : 'text-base'}`}>
+                  {lead.cliente.nombre} {lead.cliente.apellido}
+                </p>
+                {!isScrolled && (
+                  <>
+                    <p className="text-xs text-gray-500">
+                      {lead.countryCode === 'AR' ? 'DNI' : 'RUT'}: {lead.cliente.dni}
+                    </p>
+                    <div className="flex gap-4 text-xs text-gray-500">
+                      <span className="flex items-center">
+                        <Mail className="w-3 h-3 mr-1" />
+                        {lead.cliente.email}
+                      </span>
+                      <span className="flex items-center">
+                        <Phone className="w-3 h-3 mr-1" />
+                        {lead.cliente.telefono}
+                      </span>
+                    </div>
+                  </>
+                )}
+                {isScrolled && (
+                  <p className="text-xs text-gray-500">
+                    {lead.countryCode === 'AR' ? 'DNI' : 'RUT'}: {lead.cliente.dni} • {lead.cliente.email}
                   </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">{lead.countryCode === 'AR' ? 'DNI' : 'RUT'}</p>
-                  <p className="text-sm font-medium text-gray-900">{lead.cliente.dni}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="text-sm font-medium text-gray-900 flex items-center">
-                    <Mail className="w-4 h-4 mr-1 text-gray-400" />
-                    {lead.cliente.email}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Teléfono</p>
-                  <p className="text-sm font-medium text-gray-900 flex items-center">
-                    <Phone className="w-4 h-4 mr-1 text-gray-400" />
-                    {lead.cliente.telefono}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Vehiculo Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center mb-4">
-                <div className="bg-teal-100 p-2 rounded-lg mr-3">
-                  <Car className="w-5 h-5 text-[#00D4AA]" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Vehículo</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500">Vehículo</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {lead.vehiculo.marca} {lead.vehiculo.modelo}
-                  </p>
-                  <p className="text-sm text-gray-600">{lead.vehiculo.version}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Año / Kilometraje</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {lead.vehiculo.anio} • {lead.vehiculo.kilometros.toLocaleString()} km
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">SKU</p>
-                  <p className="text-sm font-medium text-gray-900">{lead.vehiculo.sku}</p>
-                </div>
-                <div className="pt-2 border-t border-gray-200">
-                  <p className="text-sm text-gray-500">Precio</p>
-                  <p className="text-xl font-bold text-gray-900">
-                    {formatCurrency(lead.vehiculo.precio)}
-                  </p>
-                </div>
+                )}
               </div>
             </div>
 
-            {/* Info Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center mb-4">
-                <div className="bg-purple-100 p-2 rounded-lg mr-3">
-                  <Building className="w-5 h-5 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Información</h3>
+            {/* Separator */}
+            <div className="h-12 w-px bg-gray-300"></div>
+
+            {/* Vehículo Info */}
+            <div className="flex items-center gap-4 flex-1">
+              <div className={`bg-teal-100 p-2 rounded-lg transition-all ${isScrolled ? 'scale-90' : ''}`}>
+                <Car className={`text-[#00D4AA] transition-all ${isScrolled ? 'w-4 h-4' : 'w-5 h-5'}`} />
               </div>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500">Asignado a</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {lead.asignadoA || 'Sin asignar'}
+              <div className={`transition-all ${isScrolled ? 'space-y-0' : 'space-y-1'}`}>
+                <p className={`font-bold text-gray-900 transition-all ${isScrolled ? 'text-sm' : 'text-base'}`}>
+                  {lead.vehiculo.marca} {lead.vehiculo.modelo}
+                </p>
+                {!isScrolled && (
+                  <>
+                    <p className="text-xs text-gray-500">
+                      {lead.vehiculo.version} • {lead.vehiculo.anio}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      SKU: {lead.vehiculo.sku} • {lead.vehiculo.kilometros?.toLocaleString()} km
+                    </p>
+                  </>
+                )}
+                {isScrolled && (
+                  <p className="text-xs text-gray-500">
+                    {lead.vehiculo.version} • {lead.vehiculo.anio} • {lead.vehiculo.sku}
                   </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Sucursal</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    Sucursal #{lead.subsidiary}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">País</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {country.flag} {country.name}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Fecha de creación</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {formatDate(lead.fechaCreacion)}
-                  </p>
-                </div>
+                )}
+              </div>
+              <div className="text-right">
+                <p className={`font-bold text-[#2E5BFF] transition-all ${isScrolled ? 'text-base' : 'text-xl'}`}>
+                  {formatCurrency(lead.vehiculo.precio)}
+                </p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Right Content - Stage Forms */}
-          <div className="lg:col-span-2">
-            {/* Content */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              {activeTab === TramiteStage.OFERTA && (
-                <SimulatorForm
-                  leadData={lead}
-                  onSimulationComplete={(result) => {
+      {/* Content */}
+      <div className="px-6 py-6">
+        {/* Full Width Content */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          {activeTab === TramiteStage.OFERTA && (
+            <SimulatorForm
+              leadData={lead}
+              onSimulationComplete={(result) => {
                     console.log('Simulación completada:', result);
                     setSelectedSimulation(result);
                     setActiveTab(TramiteStage.HANDOFF);
@@ -309,8 +285,6 @@ export default function LeadDetailPage() {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
         </div>
       </div>
     </div>
