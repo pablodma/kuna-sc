@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { FinancingOfferRequest, SimulationScenario, SimulacionResponse, SelectedSimulation, Comment, Cliente } from '@/lib/types';
 import { settingsApi } from '@/lib/api';
 import { Lead } from '@/lib/leads';
-import { Plus, Trash2, Car, Sparkles } from 'lucide-react';
+import { Plus, Trash2, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import CommentThread from './CommentThread';
 import SimulationResults from './SimulationResults';
@@ -258,47 +258,6 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
 
   return (
     <div className="space-y-6">
-      {/* Datos del Vehículo - Read Only */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 border-2 border-gray-300 animate-fadeIn">
-        <div className="flex items-center mb-4">
-          <Car className="w-6 h-6 text-[#2E5BFF] mr-2" />
-          <h3 className="text-lg font-bold text-gray-900">Vehículo</h3>
-          <span className="ml-auto text-xs text-gray-500 italic">(Datos del lead - Solo lectura)</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Marca y Modelo</label>
-            <p className="text-base font-semibold text-gray-900">
-              {leadData.vehiculo.marca} {leadData.vehiculo.modelo}
-            </p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Versión</label>
-            <p className="text-base font-semibold text-gray-900">{leadData.vehiculo.version}</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Año</label>
-            <p className="text-base font-semibold text-gray-900">{leadData.vehiculo.anio}</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Kilómetros</label>
-            <p className="text-base font-semibold text-gray-900">
-              {leadData.vehiculo.kilometros?.toLocaleString()} km
-            </p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Precio</label>
-            <p className="text-lg font-bold text-[#2E5BFF]">
-              {formatCurrency(leadData.vehiculo.precio || 0)}
-            </p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">SKU</label>
-            <p className="text-base font-semibold text-gray-900">{leadData.vehiculo.sku}</p>
-          </div>
-        </div>
-      </div>
-
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Titular Principal */}
         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-slideIn">
