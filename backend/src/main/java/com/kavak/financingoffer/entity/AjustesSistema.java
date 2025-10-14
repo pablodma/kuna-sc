@@ -18,19 +18,16 @@ public class AjustesSistema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "porcentaje_maximo", nullable = false)
-    private Integer porcentajeMaximo;
+    @Column(name = "porcentaje_maximo_financiar", nullable = false)
+    private Integer porcentajeMaximoFinanciar;
     
-    @Column(name = "actualizado_por", nullable = false)
-    private String actualizadoPor;
-    
-    @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
     
     @PrePersist
     @PreUpdate
     protected void onUpdate() {
-        timestamp = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 }
 

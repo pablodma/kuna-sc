@@ -24,12 +24,10 @@ public class SettingsController {
     
     @PatchMapping
     public ResponseEntity<AjustesSistema> updateSettings(
-            @Valid @RequestBody SettingsRequest request,
-            Authentication authentication) {
+            @Valid @RequestBody SettingsRequest request) {
         
-        String username = authentication.getName();
         AjustesSistema updatedSettings = ajustesService.updatePorcentajeMaximo(
-                request.getPorcentajeMaximo(), username);
+                request.getPorcentajeMaximo());
         
         return ResponseEntity.ok(updatedSettings);
     }

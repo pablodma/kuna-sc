@@ -12,21 +12,19 @@ public class AjustesSistemaService {
     private final AjustesSistemaRepository ajustesRepository;
     
     public AjustesSistema getCurrentSettings() {
-        AjustesSistema settings = ajustesRepository.findTopByOrderByTimestampDesc();
+        AjustesSistema settings = ajustesRepository.findTopByOrderByUpdatedAtDesc();
         if (settings == null) {
             // Crear configuración inicial si no existe
             settings = new AjustesSistema();
-            settings.setPorcentajeMaximo(50);
-            settings.setActualizadoPor("system");
+            settings.setPorcentajeMaximoFinanciar(50);
             settings = ajustesRepository.save(settings);
         }
         return settings;
     }
     
-    public AjustesSistema updatePorcentajeMaximo(Integer porcentajeMaximo, String actualizadoPor) {
+    public AjustesSistema updatePorcentajeMaximo(Integer porcentajeMaximo) {
         AjustesSistema settings = new AjustesSistema();
-        settings.setPorcentajeMaximo(porcentajeMaximo);
-        settings.setActualizadoPor(actualizadoPor);
+        settings.setPorcentajeMaximoFinanciar(porcentajeMaximo);
         return ajustesRepository.save(settings);
     }
 }
