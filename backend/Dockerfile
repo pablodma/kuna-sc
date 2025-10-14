@@ -19,6 +19,9 @@ COPY src ./src
 # Build the application
 RUN mvn clean package -DskipTests
 
+# List the target directory to verify JAR was created
+RUN ls -la target/
+
 # Runtime stage
 FROM eclipse-temurin:17-jre-alpine
 
@@ -26,10 +29,13 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy the built JAR from builder stage
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/target/financing-offer-api-0.0.1-SNAPSHOT.jar app.jar
+
+# Verify the JAR was copied
+RUN ls -la
 
 # Expose port
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java", "-Dserver.port=${PORT:-8080}", "-jar", "app.jar"]
+CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "app.jar"]
