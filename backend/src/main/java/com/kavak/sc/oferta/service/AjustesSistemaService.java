@@ -26,6 +26,7 @@ public class AjustesSistemaService {
             settings = new AjustesSistema();
             settings.setPorcentajeMaximoFinanciar(50);
             settings.setCountryCode(countryCode);
+            settings.setActualizadoPor("system");
             settings = ajustesRepository.save(settings);
         }
         return settings;
@@ -39,6 +40,7 @@ public class AjustesSistemaService {
         AjustesSistema settings = new AjustesSistema();
         settings.setPorcentajeMaximoFinanciar(porcentajeMaximo);
         settings.setCountryCode(countryCode);
+        settings.setActualizadoPor("admin");
         return ajustesRepository.save(settings);
     }
 }
