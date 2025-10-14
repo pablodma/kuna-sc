@@ -218,14 +218,12 @@ export default function LeadDetailPage() {
             {/* Content */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               {activeTab === TramiteStage.OFERTA && (
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Simulación de Oferta</h3>
-                  <SimulatorForm
-                    onSimulationComplete={(result) => {
-                      console.log('Simulación completada:', result);
-                    }}
-                  />
-                </div>
+                <SimulatorForm
+                  leadData={lead}
+                  onSimulationComplete={(result) => {
+                    console.log('Simulación completada:', result);
+                  }}
+                />
               )}
 
               {activeTab === TramiteStage.HANDOFF && (

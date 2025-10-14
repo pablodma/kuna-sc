@@ -12,6 +12,8 @@ export interface Vehiculo {
   modelo: string;
   version: string;
   anio: number;
+  kilometros?: number;
+  precio?: number;
   sku: string;
 }
 
@@ -19,6 +21,7 @@ export interface FinancingOfferRequest {
   cliente: Cliente;
   vehiculo: Vehiculo;
   porcentajeFinanciar: number;
+  cuotas?: number;
   dealId?: string;
   subsidiary?: number;
   country?: string;
