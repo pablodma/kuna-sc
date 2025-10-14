@@ -117,7 +117,7 @@ export default function LeadDetailPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">DNI / RUT</p>
+                  <p className="text-sm text-gray-500">{lead.countryCode === 'AR' ? 'DNI' : 'RUT'}</p>
                   <p className="text-sm font-medium text-gray-900">{lead.cliente.dni}</p>
                 </div>
                 <div>
@@ -132,12 +132,6 @@ export default function LeadDetailPage() {
                   <p className="text-sm font-medium text-gray-900 flex items-center">
                     <Phone className="w-4 h-4 mr-1 text-gray-400" />
                     {lead.cliente.telefono}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Ingresos anuales</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {formatCurrency(lead.cliente.ingresosAnuales)}
                   </p>
                 </div>
               </div>
