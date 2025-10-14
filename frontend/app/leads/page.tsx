@@ -63,6 +63,36 @@ export default function LeadsPage() {
     }).format(amount);
   };
 
+  // Calcular aging (días desde creación)
+  const getAging = (createdAt: Date): number => {
+    const now = new Date();
+    const diff = now.getTime() - createdAt.getTime();
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+  };
+
+  const getAgingColor = (days: number): string => {
+    if (days <= 2) return 'bg-green-100 text-green-800 border-green-300';
+    if (days <= 5) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+    if (days <= 7) return 'bg-orange-100 text-orange-800 border-orange-300';
+    return 'bg-red-100 text-red-800 border-red-300';
+  };
+
+  // Separar leads sin asignar
+  const unassignedLeads = filteredLeads.filter(lead => !lead.asignadoA).sort((a, b) => {
+    // Ordenar por prioridad y luego por aging
+    const priorityOrder = { [LeadPriority.ALTA]: 0, [LeadPriority.MEDIA]: 1, [LeadPriority.BAJA]: 2 };
+    const priorityDiff = priorityOrder[a.prioridad] - priorityOrder[b.prioridad];
+    if (priorityDiff !== 0) return priorityDiff;
+    return getAging(b.fechaCreacion) - getAging(a.fechaCreacion); // Más antiguos primero
+  });
+
+  const assignedLeads = filteredLeads.filter(lead => lead.asignadoA);
+
+  const handleTakeLead = (leadId: string) => {
+    // TODO: Conectar con API para asignar lead al usuario actual
+    alert(`Lead ${leadId} tomado! (Implementar asignación real)`);
+  };
+
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
@@ -206,9 +236,94 @@ export default function LeadsPage() {
           </div>
         </div>
 
-        {/* Leads Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+        {/* Leads Sin Asignar - Priority Section */}
+        {unassignedLeads.length > 0 && (
+          <div className="mb-8 animate-fadeIn">
+            <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl p-4 text-white flex items-center justify-between">
+              <div className="flex items-center">
+                <Clock className="w-6 h-6 mr-3 animate-pulse" />
+                <div>
+                  <h2 className="text-xl font-bold">Leads Sin Asignar</h2>
+                  <p className="text-sm text-white/90">¡Toma un lead y comienza a trabajar!</p>
+                </div>
+              </div>
+              <div className="bg-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
+                <span className="text-2xl font-bold">{unassignedLeads.length}</span>
+                <span className="text-sm ml-2">esperando</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-b-xl shadow-lg overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                {unassignedLeads.map((lead) => {
+                  const aging = getAging(lead.fechaCreacion);
+                  const country = COUNTRIES[lead.countryCode];
+                  
+                  return (
+                    <div
+                      key={lead.id}
+                      className="border-2 border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all hover:border-[#2E5BFF] bg-gradient-to-br from-white to-gray-50"
+                    >
+                      {/* Header con Prioridad y Aging */}
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${PRIORITY_COLORS[lead.prioridad]}`}>
+                          {PRIORITY_LABELS[lead.prioridad]}
+                        </span>
+                        <span className={`px-3 py-1 rounded-lg text-xs font-bold border-2 ${getAgingColor(aging)}`}>
+                          🕐 {aging} {aging === 1 ? 'día' : 'días'}
+                        </span>
+                      </div>
+
+                      {/* Información del Cliente */}
+                      <div className="mb-3">
+                        <p className="font-bold text-gray-900 flex items-center">
+                          <User className="w-4 h-4 mr-2 text-[#2E5BFF]" />
+                          {lead.cliente.nombre} {lead.cliente.apellido}
+                        </p>
+                        <p className="text-sm text-gray-600 ml-6">{country.flag} {lead.dealId}</p>
+                      </div>
+
+                      {/* Información del Vehículo */}
+                      <div className="mb-3 bg-blue-50 rounded-lg p-2">
+                        <p className="text-sm font-semibold text-gray-900 flex items-center">
+                          <Car className="w-4 h-4 mr-2 text-[#00D4AA]" />
+                          {lead.vehiculo.marca} {lead.vehiculo.modelo}
+                        </p>
+                        <p className="text-xs text-gray-600 ml-6">
+                          {lead.vehiculo.anio} • {formatCurrency(lead.vehiculo.precio, lead.countryCode)}
+                        </p>
+                      </div>
+
+                      {/* Fecha de Creación */}
+                      <p className="text-xs text-gray-500 mb-3">
+                        Creado: {formatDate(lead.fechaCreacion)}
+                      </p>
+
+                      {/* Botón Tomar Lead */}
+                      <button
+                        onClick={() => handleTakeLead(lead.id)}
+                        className="w-full py-2 bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] text-white rounded-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center"
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Tomar Lead
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Leads Asignados - Table */}
+        {assignedLeads.length > 0 && (
+          <div className="mb-6">
+            <div className="bg-white/80 backdrop-blur-sm rounded-t-lg p-4 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Leads Asignados</h2>
+              <p className="text-sm text-gray-600">Leads que ya tienen un comercial trabajando</p>
+            </div>
+            <div className="bg-white rounded-b-lg shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -239,7 +354,7 @@ export default function LeadsPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredLeads.map((lead) => (
+                {assignedLeads.map((lead) => (
                   <tr
                     key={lead.id}
                     onClick={() => router.push(`/leads/${lead.id}`)}
@@ -301,12 +416,14 @@ export default function LeadsPage() {
             </table>
           </div>
 
-          {filteredLeads.length === 0 && (
+          {assignedLeads.length === 0 && unassignedLeads.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-500">No se encontraron leads que coincidan con los filtros</p>
             </div>
           )}
-        </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
