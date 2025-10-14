@@ -191,7 +191,7 @@ export default function DashboardPage() {
               
               <SimulatorForm 
                 onSimulationComplete={handleSimulationComplete}
-                crmData={crmData}
+                crmData={crmData ?? undefined}
               />
             </div>
           ) : (
