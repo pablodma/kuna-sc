@@ -262,24 +262,6 @@ export default function LeadDetailPage({ params }: PageProps) {
                     onSimulationComplete={(result) => {
                       console.log('Simulación completada:', result);
                     }}
-                    crmData={{
-                      cliente: {
-                        nombre: lead.cliente.nombre,
-                        apellido: lead.cliente.apellido,
-                        dni: lead.cliente.dni,
-                        ingresosAnuales: lead.cliente.ingresosAnuales
-                      },
-                      vehiculo: {
-                        marca: lead.vehiculo.marca,
-                        modelo: lead.vehiculo.modelo,
-                        version: lead.vehiculo.version,
-                        anio: lead.vehiculo.anio,
-                        sku: lead.vehiculo.sku
-                      },
-                      dealId: lead.dealId,
-                      subsidiary: lead.subsidiary,
-                      country: lead.countryCode
-                    }}
                   />
                 </div>
               )}
