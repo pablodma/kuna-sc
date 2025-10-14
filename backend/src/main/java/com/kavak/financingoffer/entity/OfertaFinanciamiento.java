@@ -20,38 +20,38 @@ public class OfertaFinanciamiento {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     
-    @Column(name = "user_id")
-    private UUID userId;
+    @Column(name = "created_by")
+    private UUID createdBy;
     
-    @Column(nullable = false)
-    private String nombre;
+    @Column(name = "cliente_nombre", nullable = false)
+    private String clienteNombre;
     
-    @Column(nullable = false)
-    private String apellido;
+    @Column(name = "cliente_apellido", nullable = false)
+    private String clienteApellido;
     
-    @Column(nullable = false)
-    private String dni;
+    @Column(name = "cliente_dni", nullable = false)
+    private String clienteDni;
     
-    @Column(name = "ingresos_anuales", nullable = false)
-    private BigDecimal ingresosAnuales;
+    @Column(name = "cliente_ingresos_anuales", nullable = false)
+    private BigDecimal clienteIngresosAnuales;
     
-    @Column(nullable = false)
-    private String marca;
+    @Column(name = "vehiculo_marca", nullable = false)
+    private String vehiculoMarca;
     
-    @Column(nullable = false)
-    private String modelo;
+    @Column(name = "vehiculo_modelo", nullable = false)
+    private String vehiculoModelo;
     
-    @Column(nullable = false)
-    private String version;
+    @Column(name = "vehiculo_version", nullable = false)
+    private String vehiculoVersion;
     
-    @Column(nullable = false)
-    private Integer anio;
+    @Column(name = "vehiculo_anio", nullable = false)
+    private Integer vehiculoAnio;
     
-    @Column(nullable = false)
-    private String sku;
+    @Column(name = "vehiculo_sku", nullable = false)
+    private String vehiculoSku;
     
-    @Column(name = "monto_total_auto", nullable = false)
-    private BigDecimal montoTotalAuto;
+    @Column(name = "monto_total", nullable = false)
+    private BigDecimal montoTotal;
     
     @Column(name = "porcentaje_financiar", nullable = false)
     private Integer porcentajeFinanciar;
@@ -59,8 +59,8 @@ public class OfertaFinanciamiento {
     @Column(name = "monto_financiado", nullable = false)
     private BigDecimal montoFinanciado;
     
-    @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     
     // Campos adicionales para integración con CRM
     @Column(name = "deal_id")
@@ -74,7 +74,7 @@ public class OfertaFinanciamiento {
     
     @PrePersist
     protected void onCreate() {
-        fechaCreacion = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 }
 
