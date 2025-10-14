@@ -269,11 +269,11 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             <button
               type="button"
               onClick={addTitular}
-              disabled={simulationResults !== null}
+              disabled={simulationResults !== null || titulares.length >= 5}
               className="flex items-center px-3 py-2 bg-[#2E5BFF] text-white rounded-lg hover:bg-[#00D4AA] transition-colors text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               <Plus className="w-4 h-4 mr-1" />
-              Agregar Titular
+              Agregar Titular {titulares.length > 0 && `(${titulares.length}/5)`}
             </button>
           </div>
 
@@ -344,76 +344,92 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
             </div>
           </div>
 
-          {/* Titulares Adicionales */}
+          {/* Titulares Adicionales - Layout Lateral */}
           {titulares.length === 0 && (
             <div className="text-center py-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
               <p className="text-sm text-gray-500">
-                ¿Se necesita más de un titular? Haz click en "Agregar Titular" arriba
+                ¿Se necesita más de un titular? Haz click en "Agregar Titular" arriba (máximo 5)
               </p>
             </div>
           )}
 
-          {titulares.map((titular, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
-              <div className="flex justify-between items-center mb-3">
-                <h4 className="font-semibold text-gray-900">Titular Adicional #{index + 1}</h4>
-                <button
-                  type="button"
-                  onClick={() => removeTitular(index)}
-                  disabled={simulationResults !== null}
-                  className="text-red-600 hover:text-red-800 transition-colors disabled:text-gray-400 disabled:cursor-not-allowed"
+          {titulares.length > 0 && (
+            <div className={`grid gap-4 ${
+              titulares.length === 1 ? 'grid-cols-1' :
+              titulares.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
+              titulares.length === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
+              titulares.length === 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' :
+              'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5'
+            }`}>
+              {titulares.map((titular, index) => (
+                <div 
+                  key={index} 
+                  className="border border-gray-200 rounded-lg p-4 bg-gray-50 animate-scaleIn"
+                  style={{
+                    animationDelay: `${index * 100}ms`
+                  }}
                 >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                  <input
-                    type="text"
-                    value={titular.nombre}
-                    onChange={(e) => updateTitular(index, 'nombre', e.target.value)}
-                    disabled={simulationResults !== null}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
-                  <input
-                    type="text"
-                    value={titular.apellido}
-                    onChange={(e) => updateTitular(index, 'apellido', e.target.value)}
-                    disabled={simulationResults !== null}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-                  <input
-                    type="text"
-                    value={titular.dni}
-                    onChange={(e) => updateTitular(index, 'dni', e.target.value)}
-                    disabled={simulationResults !== null}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ingresos Anuales</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
-                    <input
-                      type="number"
-                      value={titular.ingresosAnuales || ''}
-                      onChange={(e) => updateTitular(index, 'ingresosAnuales', parseFloat(e.target.value) || 0)}
+                  <div className="flex justify-between items-center mb-3">
+                    <h4 className="font-semibold text-gray-900 text-sm">Titular #{index + 1}</h4>
+                    <button
+                      type="button"
+                      onClick={() => removeTitular(index)}
                       disabled={simulationResults !== null}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                      placeholder="0"
-                    />
+                      className="text-red-600 hover:text-red-800 transition-colors disabled:text-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Nombre</label>
+                      <input
+                        type="text"
+                        value={titular.nombre}
+                        onChange={(e) => updateTitular(index, 'nombre', e.target.value)}
+                        disabled={simulationResults !== null}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Apellido</label>
+                      <input
+                        type="text"
+                        value={titular.apellido}
+                        onChange={(e) => updateTitular(index, 'apellido', e.target.value)}
+                        disabled={simulationResults !== null}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">DNI</label>
+                      <input
+                        type="text"
+                        value={titular.dni}
+                        onChange={(e) => updateTitular(index, 'dni', e.target.value)}
+                        disabled={simulationResults !== null}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Ingresos Anuales</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-medium">$</span>
+                        <input
+                          type="number"
+                          value={titular.ingresosAnuales || ''}
+                          onChange={(e) => updateTitular(index, 'ingresosAnuales', parseFloat(e.target.value) || 0)}
+                          disabled={simulationResults !== null}
+                          className="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5BFF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          placeholder="0"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
 
         {/* Escenarios de Simulación */}
