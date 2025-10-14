@@ -8,13 +8,15 @@ interface TramiteStepperProps {
   estadoOferta: TramiteStatus;
   estadoHandoff: TramiteStatus;
   estadoDictamen: TramiteStatus;
+  onStageClick?: (stage: TramiteStage) => void;
 }
 
 export default function TramiteStepper({
   etapaActual,
   estadoOferta,
   estadoHandoff,
-  estadoDictamen
+  estadoDictamen,
+  onStageClick
 }: TramiteStepperProps) {
   const steps = [
     { stage: TramiteStage.OFERTA, label: STAGE_LABELS[TramiteStage.OFERTA], status: estadoOferta },
@@ -46,9 +48,9 @@ export default function TramiteStepper({
 
     if (isActive) {
       return {
-        circle: 'bg-blue-100 border-blue-600 text-blue-600 ring-4 ring-blue-100',
+        circle: 'bg-blue-100 border-[#2E5BFF] text-[#2E5BFF] ring-4 ring-blue-100',
         line: 'bg-gray-200',
-        label: 'text-blue-600 font-semibold'
+        label: 'text-[#2E5BFF] font-semibold'
       };
     }
 
@@ -87,7 +89,11 @@ export default function TramiteStepper({
           return (
             <div key={step.stage} className="flex items-center flex-1">
               {/* Step Circle */}
-              <div className="flex flex-col items-center">
+              <button
+                onClick={() => onStageClick?.(step.stage)}
+                className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                disabled={!onStageClick}
+              >
                 <div
                   className={`
                     w-12 h-12 rounded-full border-2 flex items-center justify-center
@@ -105,7 +111,7 @@ export default function TramiteStepper({
                   {step.status === TramiteStatus.PENDIENTE && '○ Pendiente'}
                   {step.status === TramiteStatus.RECHAZADO && '✕ Rechazado'}
                 </span>
-              </div>
+              </button>
 
               {/* Connecting Line */}
               {showLine && (

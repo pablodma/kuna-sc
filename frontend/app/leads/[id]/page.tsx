@@ -54,28 +54,28 @@ export default function LeadDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      {/* Header with Kavak Branding */}
+      <div className="bg-gradient-to-r from-[#2E5BFF] to-[#00D4AA] shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button
             onClick={() => router.push('/leads')}
-            className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="flex items-center text-white/90 hover:text-white mb-4 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver a leads
           </button>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white">
                 {lead.dealId} {country.flag}
               </h1>
-              <p className="text-gray-600">
+              <p className="text-white/90">
                 {lead.cliente.nombre} {lead.cliente.apellido} • {lead.vehiculo.marca} {lead.vehiculo.modelo}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Última actualización</p>
-              <p className="text-sm font-medium text-gray-900">{formatDate(lead.fechaUltimaActualizacion)}</p>
+              <p className="text-sm text-white/70">Última actualización</p>
+              <p className="text-sm font-medium text-white">{formatDate(lead.fechaUltimaActualizacion)}</p>
             </div>
           </div>
         </div>
@@ -89,6 +89,7 @@ export default function LeadDetailPage() {
             estadoOferta={lead.estadoOferta}
             estadoHandoff={lead.estadoHandoff}
             estadoDictamen={lead.estadoDictamen}
+            onStageClick={(stage) => setActiveTab(stage)}
           />
         </div>
       </div>
@@ -102,7 +103,7 @@ export default function LeadDetailPage() {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex items-center mb-4">
                 <div className="bg-blue-100 p-2 rounded-lg mr-3">
-                  <User className="w-5 h-5 text-blue-600" />
+                  <User className="w-5 h-5 text-[#2E5BFF]" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Cliente</h3>
               </div>
@@ -143,8 +144,8 @@ export default function LeadDetailPage() {
             {/* Vehiculo Card */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex items-center mb-4">
-                <div className="bg-green-100 p-2 rounded-lg mr-3">
-                  <Car className="w-5 h-5 text-green-600" />
+                <div className="bg-teal-100 p-2 rounded-lg mr-3">
+                  <Car className="w-5 h-5 text-[#00D4AA]" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Vehículo</h3>
               </div>
@@ -214,44 +215,8 @@ export default function LeadDetailPage() {
 
           {/* Right Content - Stage Forms */}
           <div className="lg:col-span-2">
-            {/* Tabs */}
-            <div className="bg-white rounded-t-lg shadow-sm border-b border-gray-200">
-              <div className="flex space-x-1 p-2">
-                <button
-                  onClick={() => setActiveTab(TramiteStage.OFERTA)}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === TramiteStage.OFERTA
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  Oferta
-                </button>
-                <button
-                  onClick={() => setActiveTab(TramiteStage.HANDOFF)}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === TramiteStage.HANDOFF
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  Handoff
-                </button>
-                <button
-                  onClick={() => setActiveTab(TramiteStage.DICTAMEN)}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === TramiteStage.DICTAMEN
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  Dictamen
-                </button>
-              </div>
-            </div>
-
-            {/* Tab Content */}
-            <div className="bg-white rounded-b-lg shadow-sm p-6">
+            {/* Content */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
               {activeTab === TramiteStage.OFERTA && (
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Simulación de Oferta</h3>
