@@ -14,11 +14,13 @@ import {
   STATUS_LABELS 
 } from '@/lib/leads';
 import { COUNTRIES } from '@/lib/countries';
-import { Search, Filter, ArrowUpDown, Car, User, Clock } from 'lucide-react';
+import { Search, Filter, ArrowUpDown, Car, User, Clock, Settings } from 'lucide-react';
 import CountrySelector from '@/components/CountrySelector';
+import { useAuthStore } from '@/store/authStore';
 
 export default function LeadsPage() {
   const router = useRouter();
+  const { user } = useAuthStore();
   const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPriority, setFilterPriority] = useState<LeadPriority | 'ALL'>('ALL');
@@ -73,6 +75,15 @@ export default function LeadsPage() {
             </div>
             <div className="flex items-center space-x-4">
               <CountrySelector />
+              {user?.role === 'ADMIN' && (
+                <button
+                  onClick={() => router.push('/admin')}
+                  className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-colors flex items-center font-medium backdrop-blur-sm"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  Admin
+                </button>
+              )}
               <div className="text-right">
                 <p className="text-sm font-semibold">KAVAK</p>
                 <p className="text-[#00D4AA] font-bold">CRÉDITO</p>
