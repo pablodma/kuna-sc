@@ -3,6 +3,7 @@ package com.kavak.financingoffer.service;
 import com.kavak.financingoffer.entity.User;
 import com.kavak.financingoffer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
     
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final @Lazy PasswordEncoder passwordEncoder;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
