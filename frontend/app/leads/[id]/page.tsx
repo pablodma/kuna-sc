@@ -239,12 +239,14 @@ export default function LeadDetailPage() {
                       {/* Simulación Seleccionada */}
                       <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-500 rounded-lg p-6">
                         <div className="flex items-center mb-4">
-                          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white mr-3">
+                          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white mr-3 text-2xl">
                             ✓
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-900">Simulación Aprobada</h4>
-                            <p className="text-sm text-gray-600">Financiamiento del {selectedSimulation.porcentaje}%</p>
+                            <h4 className="text-lg font-bold text-gray-900">Oferta Aceptada</h4>
+                            <p className="text-sm text-gray-600">
+                              Financiamiento del {selectedSimulation.porcentaje}% • {selectedSimulation.cuotas} cuotas
+                            </p>
                           </div>
                         </div>
                         

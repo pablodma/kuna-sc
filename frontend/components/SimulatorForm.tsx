@@ -539,13 +539,27 @@ export default function SimulatorForm({ leadData, onSimulationComplete }: Simula
           />
 
           {selectedSimulation && (
-            <div className="flex justify-end">
-              <button
-                onClick={handleContinue}
-                className="px-8 py-3 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition-colors shadow-lg"
-              >
-                Continuar a Handoff →
-              </button>
+            <div className="bg-white rounded-lg p-6 shadow-lg border-2 border-green-500">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">¿Aceptar esta oferta?</h4>
+                  <p className="text-gray-600">
+                    Al aceptar, el trámite pasará a la etapa de <span className="font-semibold">Handoff</span>
+                  </p>
+                  <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      <span className="font-semibold">Simulación seleccionada:</span>{' '}
+                      {selectedSimulation.cuotas} cuotas de {formatCurrency(selectedSimulation.valorCuota)}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleContinue}
+                  className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-bold text-lg hover:shadow-xl transition-all transform hover:scale-105"
+                >
+                  ✓ Aceptar Oferta
+                </button>
+              </div>
             </div>
           )}
         </>
