@@ -22,8 +22,9 @@ public class DataInitializer implements CommandLineRunner {
             String adminPasswordHash = passwordEncoder.encode("admin123");
             
             // Actualizar password del usuario admin
+            // La columna en Railway se llama 'password' no 'password_hash'
             int rowsUpdated = jdbcTemplate.update(
-                "UPDATE users SET password_hash = ? WHERE username = 'admin'",
+                "UPDATE users SET password = ? WHERE username = 'admin'",
                 adminPasswordHash
             );
             
