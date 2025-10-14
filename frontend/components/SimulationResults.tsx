@@ -129,8 +129,12 @@ export default function SimulationResults({
         </h3>
       </div>
 
-      {/* Escenarios en Layout Vertical */}
-      <div className="space-y-6">
+      {/* Escenarios en Grid Responsive (igual que en formulario) */}
+      <div className={`grid gap-6 ${
+        resultados.length === 1 ? 'grid-cols-1' :
+        resultados.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
+        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+      }`}>
         {resultados.map((escenario, escIdx) => {
           const hasSelectedOption = escenario.opciones.some(op => 
             isSelected(escenario.escenarioId, op.cuotas)
@@ -139,7 +143,10 @@ export default function SimulationResults({
           return (
             <div
               key={escenario.escenarioId}
-              className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#2E5BFF] transition-all"
+              className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#2E5BFF] transition-all animate-scaleIn"
+              style={{
+                animationDelay: `${escIdx * 100}ms`
+              }}
             >
               {/* Header del Escenario - Más Compacto */}
               <div className="bg-gradient-to-br from-[#2E5BFF] to-[#00D4AA] p-4 text-white">
